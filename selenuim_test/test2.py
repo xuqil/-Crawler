@@ -37,8 +37,8 @@ browser = webdriver.Chrome()
 # actions.drag_and_drop(source, target)
 # actions.perform()
 
-url = 'https://www.zhihu.com/explore'
-browser.get(url)
+# url = 'https://www.zhihu.com/explore'
+# browser.get(url)
 # browser.execute_script('window.scrollTo(0,document.body.scrollHeight)')
 # browser.execute_script('alert("To Bottom")')
 # 获取元素
@@ -46,9 +46,21 @@ browser.get(url)
 # print(logo)
 # print(logo.get_attribute('class'))
 # 获取文本值
-input = browser.find_element_by_class_name('zu-top-add-question')
-# print(input.text)
-print(input.id)
-print(input.location)
-print(input.tag_name)
-print(input.size)
+# input = browser.find_element_by_class_name('zu-top-add-question')
+# # print(input.text)
+# print(input.id)
+# print(input.location)
+# print(input.tag_name)
+# print(input.size)
+
+# url = 'http://runoob.com/try/try.php?filename=jqueryui-api-droppable'
+# browser.get(url)
+# browser.switch_to.frame('ifranemeResfult')
+# source = browser.find_element_by_css_selector('#draggable')
+# print(source)
+
+url = 'https://www.zhihu.com/explore'
+browser.implicitly_wait(10)
+browser.get(url)
+input = browser.find_element_by_class_name('zu-to-add-question')
+print(input)
