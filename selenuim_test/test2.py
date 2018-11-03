@@ -1,6 +1,9 @@
 from selenium import webdriver
 import time
 from selenium.webdriver import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 browser = webdriver.Chrome()
 # browser.get('https:www.taobao.com')
@@ -59,8 +62,15 @@ browser = webdriver.Chrome()
 # source = browser.find_element_by_css_selector('#draggable')
 # print(source)
 
-url = 'https://www.zhihu.com/explore'
-browser.implicitly_wait(10)
+# url = 'https://www.zhihu.com/explore'
+# browser.implicitly_wait(10)
+# browser.get(url)
+# input = browser.find_element_by_class_name('zu-to-add-question')
+# print(input)
+
+url = 'https://www.taobao.com/'
 browser.get(url)
-input = browser.find_element_by_class_name('zu-to-add-question')
-print(input)
+wait = WebDriverWait(browser, 10)
+input = wait.until(EC.presence_of_element_located((By.ID, 'q')))
+button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn-search')))
+print(input, button)
