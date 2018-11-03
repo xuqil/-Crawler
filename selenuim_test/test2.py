@@ -68,9 +68,17 @@ browser = webdriver.Chrome()
 # input = browser.find_element_by_class_name('zu-to-add-question')
 # print(input)
 
-url = 'https://www.taobao.com/'
-browser.get(url)
-wait = WebDriverWait(browser, 10)
-input = wait.until(EC.presence_of_element_located((By.ID, 'q')))
-button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn-search')))
-print(input, button)
+# url = 'https://www.taobao.com/'
+# browser.get(url)
+# wait = WebDriverWait(browser, 10)
+# input = wait.until(EC.presence_of_element_located((By.ID, 'q')))
+# button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn-search')))
+# print(input, button)
+
+browser.get('https://www.taobao.com/')
+browser.get('https://www.python.org/')
+browser.get('https://www.baidu.com/')
+browser.back()
+time.sleep(1)
+browser.forward()
+browser.close()
