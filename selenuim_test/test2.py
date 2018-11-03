@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import time
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
@@ -90,11 +91,22 @@ browser = webdriver.Chrome()
 # browser.delete_all_cookies()
 # print(browser.get_cookies())
 
-browser.get('https://www.baidu.com/')
-browser.execute_script('window.open()')
-print(browser.window_handles)
-browser.switch_to_window(browser.window_handles[1])
-browser.get('https://www.taobao.com')
-time.sleep(1)
-browser.switch_to_window(browser.window_handles[0])
-browser.get('https://python.org')
+# browser.get('https://www.baidu.com/')
+# browser.execute_script('window.open()')
+# print(browser.window_handles)
+# browser.switch_to_window(browser.window_handles[1])
+# browser.get('https://www.taobao.com')
+# time.sleep(1)
+# browser.switch_to_window(browser.window_handles[0])
+# browser.get('https://python.org')
+
+try:
+    browser.get('https://www.baidu.com')
+except TimeoutException:
+        print('Time Out')
+try:
+    browser.find_element_by_id('hello')
+except NoSuchElementException:
+    print('No Element')
+finally:
+    browser.close()
