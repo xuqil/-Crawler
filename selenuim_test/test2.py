@@ -28,11 +28,16 @@ browser = webdriver.Chrome()
 # button = browser.find_element_by_class_name('btn-search')
 # button.click()
 
-url = 'http://runoob.com/try/try.php?filename=jqueryui-api-droppable'
+# url = 'http://runoob.com/try/try.php?filename=jqueryui-api-droppable'
+# browser.get(url)
+# browser.switch_to.frame('iframeResult')
+# source = browser.find_element_by_css_selector('#draggable')
+# target = browser.find_element_by_css_selector('#droppable')
+# actions = ActionChains(browser)
+# actions.drag_and_drop(source, target)
+# actions.perform()
+
+url = 'https://www.zhihu.com/explore'
 browser.get(url)
-browser.switch_to.frame('iframeResult')
-source = browser.find_element_by_css_selector('#draggable')
-target = browser.find_element_by_css_selector('#droppable')
-actions = ActionChains(browser)
-actions.drag_and_drop(source, target)
-actions.perform()
+browser.execute_script('window.scrollTo(0,document.body.scrollHeight)')
+browser.execute_script('alert("To Bottom")')
