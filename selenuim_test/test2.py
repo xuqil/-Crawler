@@ -1,8 +1,9 @@
 from selenium import webdriver
 import time
+from selenium.webdriver import ActionChains
 
 browser = webdriver.Chrome()
-browser.get('https:www.taobao.com')
+# browser.get('https:www.taobao.com')
 
 # 获取单个元素
 # input_first = browser.find_element_by_id('q')
@@ -19,10 +20,19 @@ browser.get('https:www.taobao.com')
 # browser.close()
 
 #元素交互操作
-input = browser.find_element_by_id('q')
-input.send_keys('iPhone')
-time.sleep(1)
-input.clear()
-input.send_keys('iPad')
-button = browser.find_element_by_class_name('btn-search')
-button.click()
+# input = browser.find_element_by_id('q')
+# input.send_keys('iPhone')
+# time.sleep(1)
+# input.clear()
+# input.send_keys('iPad')
+# button = browser.find_element_by_class_name('btn-search')
+# button.click()
+
+url = 'http://runoob.com/try/try.php?filename=jqueryui-api-droppable'
+browser.get(url)
+browser.switch_to.frame('iframeResult')
+source = browser.find_element_by_css_selector('#draggable')
+target = browser.find_element_by_css_selector('#droppable')
+actions = ActionChains(browser)
+actions.drag_and_drop(source, target)
+actions.perform()
