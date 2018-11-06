@@ -172,5 +172,8 @@ class UserInfo(Base):
     Email = Column(String(100))
     LastLoginTime = Column(DateTime)
 
-engine = create_engine('mysql+pymysql://root:19218@127.0.0.1:3306/test1', encoding='utf8')
-Base.metadata.create_all(engine)
+#
+# engine = create_engine('mysql+mysqlconnector://root:19218@127.0.0.1:3306/test1', encoding='utf8')
+# Base.metadata.create_all(engine)
+
+
