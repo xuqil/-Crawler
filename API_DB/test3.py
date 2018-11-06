@@ -9,3 +9,4 @@ engine = create_engine('mysql+mysqlconnector://root:19218@127.0.0.1:3306/sqla_te
 DBSession = sessionmaker(bind=engine)
 # 创建session对象
 session = DBSession()
+
