@@ -1,4 +1,5 @@
 import json
+# loads()：将 JSON 对象转换为 Python 字典
 
 str = '''
 [{

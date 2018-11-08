@@ -1,4 +1,5 @@
 import json
+# dumps()：Python 字典类型转换为 JSON 对象
 
 data = [{
     "name": "Bob",
