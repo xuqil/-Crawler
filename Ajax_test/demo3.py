@@ -1,13 +1,12 @@
-import re
-from urllib.parse import urlencode
-from requests.exceptions import RequestException
-from bs4 import BeautifulSoup
-import requests
-import json
 import os
+from multiprocessing.pool import Pool
+import requests
+from urllib.parse import urlencode
 from hashlib import md5
-from multiprocessing import Pool
-
+import json
+import re
+from bs4 import BeautifulSoup
+from requests.exceptions import RequestException
 
 headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -17,37 +16,35 @@ headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
     }
 
-#获取页面信息
+
 def get_page_index(offset, keyword):
-    # 请求头部Query String Parameters
-    data = {
+    params = {
         'offset': offset,
         'format': 'json',
         'keyword': keyword,
         'autoload': 'true',
         'count': 20,
         'cur_tab': 1,
-        'from': 'gallery'
+        'from': 'gallery'  # 这个找不到？
     }
-
-    url = 'https://www.toutiao.com/search_content/?' + urlencode(data)
+    url = 'https://www.toutiao.com/search_content/?' + urlencode(params)
     try:
-        response = requests.get(url, headers = headers)
+        response = requests.get(url, headers=headers)
         if response.status_code == 200:
+            print(response.text)
             return response.text
-        return None
-    except RequestException:
-        print('请求索引出错')
+    except RecursionError:
+        print("连接错误")
         return None
 
-#索引
+
 def parse_page_index(html):
     data = json.loads(html)
-    if data and 'data' in data.keys():
+    if data and 'data' in data.keys():  # 保证json数据里面含有data这个属性
         for item in data.get('data'):
             yield item.get('article_url')
 
-#获取详情页信息
+
 def get_page_detail(url):
     try:
         response = requests.get(url, headers=headers)
@@ -55,10 +52,10 @@ def get_page_detail(url):
             return response.text
         return None
     except RequestException:
-        print('请求详情页出错', url)
+        print("请求详情页出错", url)
         return None
 
-# 获取页面详情
+
 def parse_page_detail(html, url):
     soup = BeautifulSoup(html, 'lxml')
     # 获取标题
@@ -82,6 +79,7 @@ def parse_page_detail(html, url):
                 'images': images
              }
 
+
 # 下载图片
 def down_load_images(url):
     print('正在下载',url)
@@ -93,6 +91,7 @@ def down_load_images(url):
     except RequestException:
         print('请求图片出错', url)
         return None
+
 
 # 存储图片
 def save_images(content):
@@ -110,6 +109,7 @@ def main(offset):
         if html:
             result = parse_page_detail(html, url)
             print(result)
+
 
 if __name__ == '__main__':
     main(0)
