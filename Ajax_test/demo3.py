@@ -31,7 +31,7 @@ def get_page_index(offset, keyword):
     try:
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
-            print(response.text)
+            # print(response.text)
             return response.text
     except RecursionError:
         print("连接错误")
@@ -64,8 +64,9 @@ def parse_page_detail(html, url):
     images_pattern = re.compile('gallery: JSON.parse\("(.*?)"\)', re.S)
     result = re.search(images_pattern, html)
     # 替换不需要的数据
-    json_images = re.sub(r'\\{1,2}', '', result.group(1))
-    if  result:
+    json_images = re.sub(r'\\{1,2}', '', result.group(1))  # 去掉\
+    print(json_images)
+    if result:
          images_data = json.loads(json_images)
          if images_data and 'sub_images' in images_data.keys():
              sub_images = images_data.get('sub_images')
