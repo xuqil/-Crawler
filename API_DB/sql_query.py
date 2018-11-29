@@ -64,9 +64,21 @@ session = DBSession()
 # for key, i in result.items():
 #     print(str(key) + i)
 # 查询第一个满足条件的结果
-result = session.query(Blog.id).filter(Blog.create >= 0).all()[0].id
+# result = session.query(Blog.id).filter(Blog.create >= 0).all()[0].id
+# print(result)
+# # 与上面的没有区别
+# result = session.query(Blog.id, Blog.title).filter(Blog.create >= 0).first().title
+# print(result)
+
+# 查询排序输出
+result = session.query(User.id).order_by('id desc').all()
+for i in result:
+    print(i)
+result = session.query(User.id).order_by('id').first()
 print(result)
-# 与上面的没有区别
-result = session.query(Blog.id, Blog.title).filter(Blog.create >= 0).first().title
+result = session.query(User.id).order_by(User.id).first()
 print(result)
+result = session.query(User.id).order_by(-User.id).first()
+print(result)
+
 
