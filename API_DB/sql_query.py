@@ -80,11 +80,18 @@ session = DBSession()
 # print(result)
 # result = session.query(User.id).order_by(-User.id).first()
 # print(result)
+
 # select_from()代表从哪个表查询
-result = session.query('id', 'username').select_from(User).all()
-for i in result:
-    print(i)
-result = session.query(User).get(2)
-print(result.name)
+# result = session.query('id', 'username').select_from(User).all()
+# for i in result:
+#     print(i)
+# result = session.query(User).get(2)
+# print(result.name)
 
-
+# 多表查询
+result = session.query(User, Blog).filter(Blog.user == User.name).first().User.name
+print(result)
+result = session.query(Blog, User.id, User.username).filter(Blog.user == User.username).first().id
+print(result)
+result = session.query(Blog, User.id, User.username).filter(Blog.user == User.username).first().keys()
+print(result)
