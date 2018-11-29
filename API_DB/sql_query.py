@@ -71,14 +71,20 @@ session = DBSession()
 # print(result)
 
 # 查询排序输出
-result = session.query(User.id).order_by('id desc').all()
+# result = session.query(User.id).order_by('id desc').all()
+# for i in result:
+#     print(i)
+# result = session.query(User.id).order_by('id').first()
+# print(result)
+# result = session.query(User.id).order_by(User.id).first()
+# print(result)
+# result = session.query(User.id).order_by(-User.id).first()
+# print(result)
+# select_from()代表从哪个表查询
+result = session.query('id', 'username').select_from(User).all()
 for i in result:
     print(i)
-result = session.query(User.id).order_by('id').first()
-print(result)
-result = session.query(User.id).order_by(User.id).first()
-print(result)
-result = session.query(User.id).order_by(-User.id).first()
-print(result)
+result = session.query(User).get(2)
+print(result.name)
 
 
