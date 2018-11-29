@@ -49,11 +49,17 @@ session = DBSession()
 '''
 # 不懂的查询方式（是sql函数）
 # offset(0)代表去第0个满足前面条件的结果（sqlservr函数）,Scalar 函数基于输入值，返回一个单一的值
-result = session.query(Blog).filter(Blog.create > 6).offset(0).limit(1).scalar()
-print(result.title)
+# result = session.query(Blog).filter(Blog.create > 6).offset(0).limit(1).scalar()
+# print(result.title)
+#
+# # scalar()函数基于输入值，返回一个单一的值
+# result = session.query(User).filter(User.username == '小明').scalar()
+# print(result.name)
+# result = session.query(User.id).filter(User.username == '小明').scalar()
+# print(result)
 
-# scalar()函数基于输入值，返回一个单一的值
-result = session.query(User).filter(User.username == '小明').scalar()
-print(result.name)
-result = session.query(User.id).filter(User.username == '小明').scalar()
+# 多项查询结果组合为字典
+result = dict(session.query(Blog.id, Blog.title).filter(Blog.create > 0).all())
 print(result)
+for key, i in result.items():
+    print(str(key) + i)
