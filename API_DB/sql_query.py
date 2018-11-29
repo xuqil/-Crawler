@@ -59,7 +59,14 @@ session = DBSession()
 # print(result)
 
 # 多项查询结果组合为字典
-result = dict(session.query(Blog.id, Blog.title).filter(Blog.create > 0).all())
+# result = dict(session.query(Blog.id, Blog.title).filter(Blog.create > 0).all())
+# print(result)
+# for key, i in result.items():
+#     print(str(key) + i)
+# 查询第一个满足条件的结果
+result = session.query(Blog.id).filter(Blog.create >= 0).all()[0].id
 print(result)
-for key, i in result.items():
-    print(str(key) + i)
+# 与上面的没有区别
+result = session.query(Blog.id, Blog.title).filter(Blog.create >= 0).first().title
+print(result)
+
