@@ -48,6 +48,12 @@ session = DBSession()
 ②是从数据库中的第二条数据开始查询两条数据，即第二条和第三条。
 '''
 # 不懂的查询方式（是sql函数）
-# offset(0)代表去第0个满足前面条件的结果（sqlservr函数）
+# offset(0)代表去第0个满足前面条件的结果（sqlservr函数）,Scalar 函数基于输入值，返回一个单一的值
 result = session.query(Blog).filter(Blog.create > 6).offset(0).limit(1).scalar()
 print(result.title)
+
+# scalar()函数基于输入值，返回一个单一的值
+result = session.query(User).filter(User.username == '小明').scalar()
+print(result.name)
+result = session.query(User.id).filter(User.username == '小明').scalar()
+print(result)
