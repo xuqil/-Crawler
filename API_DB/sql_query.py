@@ -130,10 +130,16 @@ session = DBSession()
 # result = session.query(User).count()
 # print(result)
 
-# 修改
+# # 修改
 # session.query(User).filter(User.username == '小明').update({'name': '明仔'})
 # session.commit()
+#
+# user = session.query(User).filter_by(username='小明').scalar()
+# user.name = '小明'
+# session.commit()
 
-user = session.query(User).filter_by(username='小明').scalar()
-user.name = '小明'
-session.commit()
+# 删除
+session.query(User).filter_by(username='小明').delete()
+#
+# user = session.query(User).filter_by(username='小明').first()
+# session.delete(user)
