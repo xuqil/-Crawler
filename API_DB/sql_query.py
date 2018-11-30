@@ -113,20 +113,27 @@ session = DBSession()
 # for i in result:
 #     print(i.name)
 
-# 函数
-# count('1')代表查询的表的第一列的行数
-result = session.query(func.count('1')).select_from(User).scalar()
-print(result)
-#  max(User.password))返回password项最大的值
-result = session.query(func.count('1'), func.max(User.password)).select_from(User).first()
-print(result)
-# 编码后输出
-result = session.query(func.md5(User.username)).select_from(User).all()
-print(result)
-# 返回当前时间
-result = session.query(func.current_timestamp()).scalar()
-print(result)
-# 返回User的个数
-result = session.query(User).count()
-print(result)
+# # 函数
+# # count('1')代表查询的表的第一列的行数
+# result = session.query(func.count('1')).select_from(User).scalar()
+# print(result)
+# #  max(User.password))返回password项最大的值
+# result = session.query(func.count('1'), func.max(User.password)).select_from(User).first()
+# print(result)
+# # 编码后输出
+# result = session.query(func.md5(User.username)).select_from(User).all()
+# print(result)
+# # 返回当前时间
+# result = session.query(func.current_timestamp()).scalar()
+# print(result)
+# # 返回User的个数
+# result = session.query(User).count()
+# print(result)
 
+# 修改
+# session.query(User).filter(User.username == '小明').update({'name': '明仔'})
+# session.commit()
+
+user = session.query(User).filter_by(username='小明').scalar()
+user.name = '小明'
+session.commit()
