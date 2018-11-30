@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, or_, and_, not_
+from sqlalchemy import create_engine, or_, and_, not_, func
 from sqlalchemy.orm import sessionmaker
 from API_DB.test6 import User, Blog
 from sqlalchemy.ext.declarative import declarative_base
@@ -109,6 +109,24 @@ session = DBSession()
 # result = session.query(User).filter(User.id.like('2%')).all()
 # for i in result:
 #     print(i.name)
-result = session.query(User).filter(User.name.startswith('小')).all()
-for i in result:
-    print(i.name)
+# result = session.query(User).filter(User.name.startswith('小')).all()
+# for i in result:
+#     print(i.name)
+
+# 函数
+# count('1')代表查询的表的第一列的行数
+result = session.query(func.count('1')).select_from(User).scalar()
+print(result)
+#  max(User.password))返回password项最大的值
+result = session.query(func.count('1'), func.max(User.password)).select_from(User).first()
+print(result)
+# 编码后输出
+result = session.query(func.md5(User.username)).select_from(User).all()
+print(result)
+# 返回当前时间
+result = session.query(func.current_timestamp()).scalar()
+print(result)
+# 返回User的个数
+result = session.query(User).count()
+print(result)
+
