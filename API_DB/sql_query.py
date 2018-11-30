@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, or_, and_
+from sqlalchemy import create_engine, or_, and_, not_
 from sqlalchemy.orm import sessionmaker
 from API_DB.test6 import User, Blog
 from sqlalchemy.ext.declarative import declarative_base
@@ -89,9 +89,26 @@ session = DBSession()
 # print(result.name)
 
 # 多表查询
-result = session.query(User, Blog).filter(Blog.user == User.name).first().User.name
-print(result)
-result = session.query(Blog, User.id, User.username).filter(Blog.user == User.username).first().id
-print(result)
-result = session.query(Blog, User.id, User.username).filter(Blog.user == User.username).first().keys()
-print(result)
+# result = session.query(User, Blog).filter(Blog.user == User.name).first().User.name
+# print(result)
+# result = session.query(Blog, User.id, User.username).filter(Blog.user == User.username).first().id
+# print(result)
+# result = session.query(Blog, User.id, User.username).filter(Blog.user == User.username).first().keys()
+# print(result)
+
+# 条件查询
+# result = session.query(User).filter(or_(User.id == '', User.id == '2', User.id == '3')).all()
+# for i in result:
+#     print(i.name)
+# result = session.query(User).filter(not_(User.id == '2')).all()
+# for i in result:
+#     print(i.name)
+# result = session.query(User).filter(User.id.in_(['1', '2'])).all()
+# for i in result:
+#     print(i.name)
+# result = session.query(User).filter(User.id.like('2%')).all()
+# for i in result:
+#     print(i.name)
+result = session.query(User).filter(User.name.startswith('小')).all()
+for i in result:
+    print(i.name)
