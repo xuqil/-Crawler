@@ -36,12 +36,17 @@ session.flush()是进行数据交互，但是事物没有提交，进行数据�
 # 一次全取出就太暴力了. 关系对应的属性可以定义成一个 Query :
 # '''
 
-# 这样在获取实例时就可以自由控制了:
-# 查询user下的每篇blog
-result = session.query(User).get(1).blog_list.all()
-for i in result:
-    print(i.title)
+# # 这样在获取实例时就可以自由控制了:
+# # 查询user下的每篇blog
+# result = session.query(User).get(1).blog_list.all()
+# for i in result:
+#     print(i.title)
+#
+# #  提取该user下title为“嗨嗨”的blog
+# result = session.query(User).get(1).blog_list.filter(Blog.title == '嗨嗨').first()
+# print(result.title)
 
-#  提取该user下title为“嗨嗨”的blog
-result = session.query(User).get(1).blog_list.filter(Blog.title == '嗨嗨').first()
-print(result.title)
+# 查询编写title = “嗨嗨”的blog的user
+# 对于一对多的关系，使用any()函数查询
+result = session.query(User).filter(User.blogs.any(Blog.title == '嗨嗨')).first()
+print(result.name)

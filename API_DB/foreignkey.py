@@ -39,7 +39,8 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(32), nullable=False)
 
-    blog_list = relationship('Blog', order_by='Blog.create', lazy="dynamic")  # 这样在获取实例时就可以自由控制了
+    # blog_list = relationship('Blog', order_by='Blog.create', lazy="dynamic")  # 这样在获取实例时就可以自由控制了
+    blogs = relationship('Blog')
 
 
 # 关系只是 SQLAlchemy 提供的工具, 与数据库无关, 所以任何时候添加都是可以的.
