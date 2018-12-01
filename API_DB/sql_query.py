@@ -139,7 +139,14 @@ session = DBSession()
 # session.commit()
 
 # 删除
-session.query(User).filter_by(username='小明').delete()
+# session.query(User).filter_by(username='小明').delete()
 #
 # user = session.query(User).filter_by(username='小明').first()
 # session.delete(user)
+
+# JOIN
+# 按query(Blog, User)表内的顺序输出对应表的符合的内容
+result = session.query(Blog, User).join(User, Blog.user == User.username).all()
+for blog, user in result:
+    print(str(blog.id) + blog.user + str(user.id))
+
