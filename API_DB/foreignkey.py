@@ -39,11 +39,10 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(32), nullable=False)
 
-    blog_list = relationship('Blog', order_by='Blog.create')
+    blog_list = relationship('Blog', order_by='Blog.create', lazy="dynamic")  # 这样在获取实例时就可以自由控制了
 
 
 # 关系只是 SQLAlchemy 提供的工具, 与数据库无关, 所以任何时候添加都是可以的.
-#
 # 上面的 User-Blog 是一个"一对多"关系, 通过 Blog 的 user 这个 ForeignKey , SQLAlchemy 可以自动处理关系的定义. 在查询时,
 # 返回的结果自然也是, 一个是列表, 一个是单个对象:
 
