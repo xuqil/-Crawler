@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.types import String, Integer, CHAR, BIGINT, Text
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, attributes
 
 # from API_DB.test6 import User
 Base = declarative_base()
@@ -42,7 +42,9 @@ class User(Base):
 
     # blog_list = relationship('Blog', order_by='Blog.create', lazy="dynamic")  # 这样在获取实例时就可以自由控制了
     # collection_class=set设置查询结果为集合形式
-    blogs = relationship('Blog', collection_class=set)
+    # blogs = relationship('Blog', collection_class=set)
+    # collection_class=attributes设置查询结果为字典形式
+    blogs = relationship('Blog', collection_class=attributes)
 
 
 # 关系只是 SQLAlchemy 提供的工具, 与数据库无关, 所以任何时候添加都是可以的.
