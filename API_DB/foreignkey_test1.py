@@ -46,11 +46,17 @@ session.flush()是进行数据交互，但是事物没有提交，进行数据�
 # result = session.query(User).get(1).blog_list.filter(Blog.title == '嗨嗨').first()
 # print(result.title)
 
-# 查询编写title = “嗨嗨”的blog的user
-# 对于一对多的关系，使用any()函数查询
-result = session.query(User).filter(User.blogs.any(Blog.title == '嗨嗨')).first()
-print(result.name)
-# 查询name="小星星"作者的blog
-# 反之，对于多对一的关系，则使用has()函数查询
-blog = session.query(Blog).filter(Blog.user_obj.has(User.name == u'小星星')).first()
-print(blog.title)
+# # 查询编写title = “嗨嗨”的blog的user
+# # 对于一对多的关系，使用any()函数查询
+# result = session.query(User).filter(User.blogs.any(Blog.title == '嗨嗨')).first()
+# print(result.name)
+# # 查询name="小星星"作者的blog
+# # 反之，对于多对一的关系，则使用has()函数查询
+# blog = session.query(Blog).filter(Blog.user_obj.has(User.name == u'小星星')).first()
+# print(blog.title)
+
+
+blog = session.query(Blog).first()
+print(blog.user_obj)
+print(blog.user_obj.name)
+print(session.query(Blog))

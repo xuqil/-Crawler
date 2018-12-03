@@ -29,7 +29,8 @@ class Blog(Base):
     user_id = Column(Integer, ForeignKey('users3.id'), index=True, nullable=False)
     create = Column(BIGINT, index=True, nullable=False)
 
-    user_obj = relationship('User')
+    # user_obj = relationship('User')
+    user_obj = relationship('User', lazy='joined', cascade='all')
 
 
 # 要定义关系, 必有使用 ForeignKey 约束. 当然, 这里说的只是在定义模型时必有要有, 至于数据库中是否真有外键约定, 这并不重要
@@ -40,7 +41,7 @@ class User(Base):
     name = Column(String(32), nullable=False)
 
     # blog_list = relationship('Blog', order_by='Blog.create', lazy="dynamic")  # 这样在获取实例时就可以自由控制了
-    blogs = relationship('Blog')
+    # blogs = relationship('Blog')
 
 
 # 关系只是 SQLAlchemy 提供的工具, 与数据库无关, 所以任何时候添加都是可以的.
