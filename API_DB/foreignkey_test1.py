@@ -60,15 +60,22 @@ session.flush()是进行数据交互，但是事物没有提交，进行数据�
 # print(blog.user_obj.name)
 # print(session.query(Blog))
 
+#
+# user = session.query(User).first()
+# print(user.name)
+#
+# # user = User(name=u'小星星')
+# # 小星星创建两篇blog
+# # session.add_all([Blog(title=u'A', text=u'呜呜呜', create=1, user_obj=user),
+# #                  Blog(title=u'B', text=u'顶顶顶顶', create=2, user_obj=user)])
+# # session.commit()
+# # 通过blogs = relationship('Blog')查询第一个user下的blog
+# user = session.query(User).first()
+# print(user.blogs)
 
-user = session.query(User).first()
-print(user.name)
 
-# user = User(name=u'小星星')
-# 小星星创建两篇blog
-# session.add_all([Blog(title=u'A', text=u'呜呜呜', create=1, user_obj=user),
-#                  Blog(title=u'B', text=u'顶顶顶顶', create=2, user_obj=user)])
-# session.commit()
-# 通过blogs = relationship('Blog')查询第一个user下的blog
-user = session.query(User).first()
-print(user.blogs)
+blog = session.query(Blog).filter(Blog.title == '测试').one()  # 获取title为“测试”的blog
+print(blog.tag_list)  # 该blog对应的Tag对象
+print(session.query(Blog).filter(Blog.title == '测试'))  # 对应的SQL查询语言
+for i in blog.tag_list:  # 遍历blog对应的Tag对象
+    print(i.name)  # 每个Tag的name

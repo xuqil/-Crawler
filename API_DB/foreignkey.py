@@ -34,7 +34,8 @@ class Blog(Base):
     # user_obj = relationship('User', lazy='joined', cascade='all')
 
     # tag_list = relationship('Tag')  # 显示是错误的, 因为在 Tag 中并没有外键
-    tag_list = relationship('BlogAndTag')
+    # tag_list = relationship('BlogAndTag')
+    tag_list = relationship('Tag', secondary=lambda: BlogAndTag.__table__)
 
 
 # 要定义关系, 必有使用 ForeignKey 约束. 当然, 这里说的只是在定义模型时必有要有, 至于数据库中是否真有外键约定, 这并不重要
