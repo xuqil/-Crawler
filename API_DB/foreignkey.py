@@ -33,6 +33,9 @@ class Blog(Base):
     user_obj = relationship('User')
     # user_obj = relationship('User', lazy='joined', cascade='all')
 
+    # tag_list = relationship('Tag')  # 显示是错误的, 因为在 Tag 中并没有外键
+    tag_list = relationship('BlogAndTag')
+
 
 # 要定义关系, 必有使用 ForeignKey 约束. 当然, 这里说的只是在定义模型时必有要有, 至于数据库中是否真有外键约定, 这并不重要
 class User(Base):
@@ -51,6 +54,21 @@ class User(Base):
     # collection_class=attributes设置查询结果为字典形式
     blogs = relationship('Blog', collection_class=mapped_collection(lambda blog: blog.title.lower()))
 
+
+class BlogAndTag(Base):
+    __tablename__ = 'blog_and_tag'
+
+    id = Column(Integer, primary_key=True)
+    blog_id = Column(Integer, ForeignKey('blog3.id'), index=True)
+    tag_id = Column(Integer, ForeignKey('tag.id'), index=True)
+    creat = Column(BIGINT, index=True, nullable=False)
+
+
+class Tag(Base):
+    __tablename__ = 'tag'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(30), nullable=False)
 
 # 关系只是 SQLAlchemy 提供的工具, 与数据库无关, 所以任何时候添加都是可以的.
 # 上面的 User-Blog 是一个"一对多"关系, 通过 Blog 的 user 这个 ForeignKey , SQLAlchemy 可以自动处理关系的定义. 在查询时,

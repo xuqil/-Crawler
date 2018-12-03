@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from API_DB.foreignkey import User, Blog
+from API_DB.foreignkey import User, Blog, BlogAndTag, Tag
 Engine = create_engine('mysql+mysqlconnector://root:19218@127.0.0.1:3306/test', encoding='utf8')
 # 创建DBSession类型
 DBSession = sessionmaker(bind=Engine)
