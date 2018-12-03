@@ -64,11 +64,11 @@ session.flush()是进行数据交互，但是事物没有提交，进行数据�
 user = session.query(User).first()
 print(user.name)
 
-user = User(name=u'小星星')
+# user = User(name=u'小星星')
 # 小星星创建两篇blog
-session.add_all([Blog(title=u'A', text=u'呜呜呜', create=1, user_obj=user),
-                 Blog(title=u'B', text=u'顶顶顶顶', create=2, user_obj=user)])
-session.commit()
+# session.add_all([Blog(title=u'A', text=u'呜呜呜', create=1, user_obj=user),
+#                  Blog(title=u'B', text=u'顶顶顶顶', create=2, user_obj=user)])
+# session.commit()
 # 通过blogs = relationship('Blog')查询第一个user下的blog
 user = session.query(User).first()
 print(user.blogs)
