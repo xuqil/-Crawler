@@ -69,7 +69,7 @@ class Tag(Base):
     __tablename__ = 'tag'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(30), nullable=False)
+    name = Column(String(30))
 
 # 关系只是 SQLAlchemy 提供的工具, 与数据库无关, 所以任何时候添加都是可以的.
 # 上面的 User-Blog 是一个"一对多"关系, 通过 Blog 的 user 这个 ForeignKey , SQLAlchemy 可以自动处理关系的定义. 在查询时,
