@@ -57,7 +57,8 @@ class User(Base):
 
     # blog_list = relationship('Blog', cascade='')
     # blog_list_auto = relationship('Blog', cascade='save-update, delete')
-    blog_list_auto = relationship('Blog', cascade='save-update, delete, delete-orphan, merge, refresh-expire')
+    # blog_list_auto = relationship('Blog', cascade='save-update, delete, delete-orphan, merge, refresh-expire')
+    blog_list_auto = relationship('Blog', cascade='delete, delete-orphan, expunge')
 
 
 class BlogAndTag(Base):

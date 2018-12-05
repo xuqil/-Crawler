@@ -133,10 +133,20 @@ session.flush()是进行数据交互，但是事物没有提交，进行数据�
 # session.commit()
 
 
-user = session.query(User).first()
-blog = user.blog_list_auto[0]
-print(blog.title)
-session.expire(user)  # 标记查询的关联对象blog已经过期，会重新查询一次
-print(blog.title)
+# user = session.query(User).first()
+# blog = user.blog_list_auto[0]
+# print(blog.title)
+# session.expire(user)  # 标记查询的关联对象blog已经过期，会重新查询一次
+# print(blog.title)
+#
+# session.commit()
 
-session.commit()
+
+user = User(name=u'大猪')
+blog = Blog(title=u'猪崽', text='辅导费', create=2)
+user.blog_list_auto = [blog]
+
+session.add(user)
+session.add(blog)
+session.expunge(user)
+print(blog in session)
