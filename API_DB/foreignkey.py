@@ -53,7 +53,9 @@ class User(Base):
     # blogs = relationship('Blog', collection_class=attribute_mapped_collection('title'))
 
     # collection_class=attributes设置查询结果为字典形式
-    blogs = relationship('Blog', collection_class=mapped_collection(lambda blog: blog.title.lower()))
+    # blogs = relationship('Blog', collection_class=mapped_collection(lambda blog: blog.title.lower()))
+    blog_list = relationship('Blog', cascade='')
+    blog_list_auto = relationship('Blog', cascade='save-update')
 
 
 class BlogAndTag(Base):

@@ -80,12 +80,20 @@ session.flush()是进行数据交互，但是事物没有提交，进行数据�
 # for i in blog.tag_list:  # 遍历blog对应的Tag对象
 #     print(i.name)  # 每个Tag的name
 
-# # 通过tag_list给blog的tag赋值
-blog = session.query(Blog).filter(Blog.title == '测试').one()
-blog.tag_list = [Tag(name='Java')]
-session.commit()
+# # # 通过tag_list给blog的tag赋值
+# blog = session.query(Blog).filter(Blog.title == '测试').one()
+# blog.tag_list = [Tag(name='Java')]
+# session.commit()
 
 # # 如果该tag已经与其他表相关联将不能通过以下代码删除
 # tag = session.query(Tag).filter(Tag.name == 'aa').one()
 # session.delete(tag)
 # session.commit()
+
+# 新增一个用户的同时新增该用户的blog
+user = User(name=u'小星星')
+blog = Blog(title=u'第二个', text=u'收拾收拾', create=1)
+user.blog_list_auto = [blog]
+session.add(user)  # 如果不新增用户那么blog也不会新增
+for blog in session:
+    session.commit()
