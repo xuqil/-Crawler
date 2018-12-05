@@ -38,8 +38,10 @@ class Blog(Base):
     # tag_list = relatiaonship('BlogAndTag')
     tag_list = relationship('Tag', secondary=lambda: BlogAndTag.__table__)
 
+    # 定义只关心的user的name
     user_name = association_proxy('user_obj', 'name')
 
+    # 与User配合使用
     def __init__(self, title):
         self.title = title
 
@@ -66,6 +68,7 @@ class User(Base):
     # blog_list_auto = relationship('Blog', cascade='save-update, delete, delete-orphan, merge, refresh-expire')
     # blog_list_auto = relationship('Blog', cascade='delete, delete-orphan, expunge')
 
+    # 定义只关心的blog的title
     blog_list = relationship('Blog')
     blog_title_list = association_proxy('blog_list', 'title',
                                         creator=lambda t: Blog(title=t))
