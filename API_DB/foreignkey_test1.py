@@ -90,10 +90,15 @@ session.flush()是进行数据交互，但是事物没有提交，进行数据�
 # session.delete(tag)
 # session.commit()
 
-# 新增一个用户的同时新增该用户的blog
-user = User(name=u'小星星')
-blog = Blog(title=u'第二个', text=u'收拾收拾', create=1)
-user.blog_list_auto = [blog]
-session.add(user)  # 如果不新增用户那么blog也不会新增
-for blog in session:
-    session.commit()
+# # 新增一个用户的同时新增该用户的blog
+# user = User(name=u'小星星')
+# blog = Blog(title=u'第二个', text=u'收拾收拾', create=1)
+# user.blog_list_auto = [blog]
+# session.add(user)  # 如果不新增用户那么blog也不会新增
+# for blog in session:
+#     session.commit()
+
+# 删除了第一个user，那么他的blog也会被删除
+user = session.query(User).first()
+session.delete(user)
+session.commit()
