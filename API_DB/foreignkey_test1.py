@@ -103,9 +103,24 @@ session.flush()是进行数据交互，但是事物没有提交，进行数据�
 # session.delete(user)
 # session.commit()
 
-# 删除多对多的关联对象
-user = session.query(User).first()
-# blog = session.query(Blog).filter(Blog.title == u'A').first()
-# user.blog_list = [blog]
-session.delete(user)
+# # 删除多对多的关联对象
+# user = session.query(User).first()
+# # blog = session.query(Blog).filter(Blog.title == u'A').first()
+# # user.blog_list = [blog]
+# session.delete(user)
+# session.commit()
+
+# 使用merge，没有那么创建
+# user = User(id=1, name='小猪')
+# session.add(user)
+# session.commit()
+#
+# user = User(id=1)
+# user = session.merge(user)
+# print(user.name)
+
+# 使用merge，存在则修改
+user = User(id=1, name='大猪')
+user = session.merge(user)
 session.commit()
+
