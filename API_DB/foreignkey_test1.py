@@ -98,7 +98,14 @@ session.flush()是进行数据交互，但是事物没有提交，进行数据�
 # for blog in session:
 #     session.commit()
 
-# 删除了第一个user，那么他的blog也会被删除
+# # 删除了第一个user，那么他的blog也会被删除
+# user = session.query(User).first()
+# session.delete(user)
+# session.commit()
+
+# 删除多对多的关联对象
 user = session.query(User).first()
+# blog = session.query(Blog).filter(Blog.title == u'A').first()
+# user.blog_list = [blog]
 session.delete(user)
 session.commit()

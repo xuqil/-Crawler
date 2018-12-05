@@ -56,7 +56,8 @@ class User(Base):
     # blogs = relationship('Blog', collection_class=mapped_collection(lambda blog: blog.title.lower()))
 
     # blog_list = relationship('Blog', cascade='')
-    blog_list_auto = relationship('Blog', cascade='save-update, delete')
+    # blog_list_auto = relationship('Blog', cascade='save-update, delete')
+    blog_list_auto = relationship('Blog', cascade='save-update, delete-orphan')
 
 
 class BlogAndTag(Base):
