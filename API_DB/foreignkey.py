@@ -4,6 +4,7 @@ from sqlalchemy.types import String, Integer, CHAR, BIGINT, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, attributes
 from sqlalchemy.orm.collections import attribute_mapped_collection, mapped_collection
+from sqlalchemy.ext.associationproxy import association_proxy
 
 # from API_DB.test6 import User
 Base = declarative_base()
@@ -34,8 +35,13 @@ class Blog(Base):
     # user_obj = relationship('User', lazy='joined', cascade='all')
 
     # tag_list = relationship('Tag')  # 显示是错误的, 因为在 Tag 中并没有外键
-    # tag_list = relationship('BlogAndTag')
+    # tag_list = relatiaonship('BlogAndTag')
     tag_list = relationship('Tag', secondary=lambda: BlogAndTag.__table__)
+
+    user_name = association_proxy('user_obj', 'name')
+
+    def __init__(self, title):
+        self.title = title
 
 
 # 要定义关系, 必有使用 ForeignKey 约束. 当然, 这里说的只是在定义模型时必有要有, 至于数据库中是否真有外键约定, 这并不重要
@@ -58,7 +64,11 @@ class User(Base):
     # blog_list = relationship('Blog', cascade='')
     # blog_list_auto = relationship('Blog', cascade='save-update, delete')
     # blog_list_auto = relationship('Blog', cascade='save-update, delete, delete-orphan, merge, refresh-expire')
-    blog_list_auto = relationship('Blog', cascade='delete, delete-orphan, expunge')
+    # blog_list_auto = relationship('Blog', cascade='delete, delete-orphan, expunge')
+
+    blog_list = relationship('Blog')
+    blog_title_list = association_proxy('blog_list', 'title',
+                                        creator=lambda t: Blog(title=t))
 
 
 class BlogAndTag(Base):

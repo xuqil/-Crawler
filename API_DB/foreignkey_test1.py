@@ -141,12 +141,20 @@ session.flush()是进行数据交互，但是事物没有提交，进行数据�
 #
 # session.commit()
 
+#
+# user = User(name=u'大猪')
+# blog = Blog(title=u'猪崽', text='辅导费', create=2)
+# user.blog_list_auto = [blog]
+#
+# session.add(user)
+# session.add(blog)
+# session.expunge(user)
+# print(blog in session)
 
-user = User(name=u'大猪')
-blog = Blog(title=u'猪崽', text='辅导费', create=2)
-user.blog_list_auto = [blog]
+# 查询只关心user_name即对应的user的name
+blog = session.query(Blog).filter(Blog.user_name == u'大猪').first()
+print(blog)
 
-session.add(user)
-session.add(blog)
-session.expunge(user)
-print(blog in session)
+# 查询只关心blog_title_list即对应的blog的title
+user = session.query(User).filter(User.blog_title_list.contains('A')).first()
+print(user)
