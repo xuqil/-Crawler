@@ -1,12 +1,15 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from API_DB.foreignkey import User, Blog, BlogAndTag, Tag
 Engine = create_engine('mysql+mysqlconnector://root:19218@127.0.0.1:3306/test', encoding='utf8')
 # 创建DBSession类型
 DBSession = sessionmaker(bind=Engine)
 # 创建session对象
-session = DBSession()
+# session = DBSession()
 
+conn = Engine.connect()
+session = Session(bind=conn)
+trans = conn.begin()
 
 # 修改用户名字，如果失败则回滚，相当于什么事都没发生
 # try:
@@ -46,13 +49,20 @@ session = DBSession()
 #
 # session.commit()
 
-user = User(name='乐乐')
-session.begin_nested()  # 使用该语句时是最外层事务提交才会生效，最外层是rollback，因此不会添加用户
+# user = User(name='乐乐')
+# session.begin_nested()  # 使用该语句时是最外层事务提交才会生效，最外层是rollback，因此不会添加用户
+# session.add(user)
+# session.commit()
+# session.rollback()
+
+
+user = User(name='test')
+session.begin_nested()
 session.add(user)
 session.commit()
-session.rollback()
 
-
+session.commit()
+trans.rollback()
 
 
 
