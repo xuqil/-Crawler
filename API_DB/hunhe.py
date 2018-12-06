@@ -31,7 +31,7 @@ class User(Base):
 
     @hybrid_property
     def balance(self):
-        return sum(x.balance for x in self.accounts)
+        return select([func.sum(Account.balance)]).where(Account.user_id == self.id).label('balance_v')
 
 
 class Interval(Base):
@@ -89,6 +89,9 @@ def init_db():
 # ins = session.query(Interval).filter(Interval.length > 1).first()
 # print(ins.id)
 
-# 查询时
-user = session.query(User).first()
+# # 查询时
+# user = session.query(User).first()
+# print(user.balance)
+
+user = session.query(User, User.balance).first()
 print(user.balance)
