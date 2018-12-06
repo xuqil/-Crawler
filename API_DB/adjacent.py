@@ -17,7 +17,7 @@ class Node(Base):
     name = Column(Unicode(32), nullable=False, server_default='')
     parent = Column(Integer, ForeignKey('node.id'), index=True, server_default=None)
 
-    children = relationship('Node')
+    children = relationship('Node', lazy='joined', cascade='all')
     parent_obj = relationship('Node', remote_side=[id])
 
 
