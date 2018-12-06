@@ -17,12 +17,12 @@ class Account(Base):
     __tablename__ = 'account'
 
     id = Column(Integer, autoincrement=True, primary_key=True)
-    user = Column(Integer, ForeignKey('user.id'), index=True)
+    user_id = Column(Integer, ForeignKey('user4.id'), index=True)
     balance = Column(Integer, server_default='0')
 
 
 class User(Base):
-    __tablename__ = 'user'
+    __tablename__ = 'user4'
 
     id = Column(Integer, autoincrement=True, primary_key=True)
     name = Column(String(32), nullable=False, server_default='')
@@ -88,3 +88,6 @@ def init_db():
 # ins = session.query(Interval).filter(Interval.length > 1).first()
 # print(ins.id)
 
+# 查询时
+user = session.query(User).first()
+print(user.balance)
