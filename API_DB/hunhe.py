@@ -24,9 +24,9 @@ class Interval(Base):
     def length(self):
         return self.end - self.start
 
-    # @hybrid_method
-    # def bigger(self, i):
-    #     return self.length > i
+    @hybrid_method
+    def bigger(self, i):
+        return self.length > i
 
     @length.setter
     def length(self, i):
