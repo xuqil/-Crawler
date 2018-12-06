@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, func, ForeignKey
+from sqlalchemy import create_engine, Column, func, ForeignKey, select
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.types import Integer, String
@@ -29,6 +29,7 @@ class User(Base):
 
     accounts = relationship('Account')
 
+    @hybrid_property
     def balance(self):
         return sum(x.balance for x in self.accounts)
 
