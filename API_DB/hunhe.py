@@ -1,7 +1,7 @@
-from sqlalchemy import create_engine, Column, func
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, Column, func, ForeignKey
+from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.types import Integer
+from sqlalchemy.types import Integer, String
 from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
 Engine = create_engine('mysql+mysqlconnector://root:19218@127.0.0.1:3306/test', encoding='utf8')
 Base = declarative_base()
@@ -11,6 +11,26 @@ Base = declarative_base()
 DBSession = sessionmaker(bind=Engine)
 # 创建session对象
 session = DBSession()
+
+
+class Account(Base):
+    __tablename__ = 'account'
+
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    user = Column(Integer, ForeignKey('user.id'), index=True)
+    balance = Column(Integer, server_default='0')
+
+
+class User(Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    name = Column(String(32), nullable=False, server_default='')
+
+    accounts = relationship('Account')
+
+    def balance(self):
+        return sum(x.balance for x in self.accounts)
 
 
 class Interval(Base):
@@ -65,6 +85,6 @@ def init_db():
 # print(ins.bigger(1))
 
 
-ins = session.query(Interval).filter(Interval.length > 1).first()
-print(ins.id)
+# ins = session.query(Interval).filter(Interval.length > 1).first()
+# print(ins.id)
 
