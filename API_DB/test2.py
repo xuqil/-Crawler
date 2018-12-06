@@ -8,7 +8,6 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 metadata = Base.metadata
 
-
 #用户信息
 class UserInfo(Base):
     __tablename__ = 'UserInfo'
@@ -28,7 +27,7 @@ class UserInfo(Base):
     LastLoginTime = Column(DateTime)
 
 #
-engine = create_engine('mysql+pymysql://root:19218@127.0.0.1:3306/api_test', encoding='utf8')
-Base.metadata.create_all(engine)
+# engine = create_engine('mysql+mysqlconnector://root:19218@127.0.0.1:3306/test1', encoding='utf8')
+# Base.metadata.create_all(engine)
 
 
