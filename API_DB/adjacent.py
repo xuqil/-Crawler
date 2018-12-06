@@ -17,7 +17,7 @@ class Node(Base):
     name = Column(Unicode(32), nullable=False, server_default='')
     parent = Column(Integer, ForeignKey('node.id'), index=True, server_default=None)
 
-    children = relationship('Node', lazy='joined', cascade='all')
+    children = relationship('Node', lazy='joined', cascade='all, delete-orphan')
     parent_obj = relationship('Node', remote_side=[id])
 
 
@@ -41,7 +41,10 @@ def init_db():
 # print(n.children[0].name)
 # print(n.children[0].children[0].name)
 
-n = session.query(Node).filter(Node.name == u'小猪').first()
-session.delete(n)
-session.commit()
+# n = session.query(Node).filter(Node.name == u'小猪').first()
+# session.delete(n)
+# session.commit()
 
+n = session.query(Node).filter(Node.name == u'等等').first()
+n.children = []
+session.commit()
