@@ -36,7 +36,12 @@ def init_db():
 # print(n.children[0].name)
 # print(n.children[0].children[0].name)
 
-n = session.query(Node).filter(Node.name == u'大直沽').options(joinedload_all('children', 'children')).first()
-print(n.name)
-print(n.children[0].name)
-print(n.children[0].children[0].name)
+# n = session.query(Node).filter(Node.name == u'大直沽').options(joinedload_all('children', 'children')).first()
+# print(n.name)
+# print(n.children[0].name)
+# print(n.children[0].children[0].name)
+
+n = session.query(Node).filter(Node.name == u'小猪').first()
+session.delete(n)
+session.commit()
+
