@@ -27,8 +27,12 @@ def init_db():
 
 # init_db()
 
-# n = session.query(Node).filter(Node.name == u'小猪').first()
-n = session.query(Node).filter(Node.name == u'小猪').options(joinedload('parent_obj')).first()
-print(n.id)
+# # n = session.query(Node).filter(Node.name == u'小猪').first()
+# n = session.query(Node).filter(Node.name == u'小猪').options(joinedload('parent_obj')).first()
+# print(n.id)
 
+n = session.query(Node).filter(Node.name == u'大直沽').options(joinedload('children').joinedload('children')).first()
+print(n.name)
+print(n.children[0].name)
+print(n.children[0].children[0].name)
 
