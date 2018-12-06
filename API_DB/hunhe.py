@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column
+from sqlalchemy import create_engine, Column, func
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.types import Integer
@@ -22,7 +22,7 @@ class Interval(Base):
 
     @hybrid_property
     def length(self):
-        return self.end - self.start
+        return abs(self.end - self.start)
 
     @hybrid_method
     def bigger(self, i):
@@ -31,6 +31,10 @@ class Interval(Base):
     @length.setter
     def length(self, i):
         session.end = self.start + i
+
+    @length.expression
+    def length(self):
+        return func.abs(self.end - self.start)
 
 
 def init_db():
@@ -53,10 +57,14 @@ def init_db():
 # ins = session.query(Interval).filter(Interval.end - Interval.start > 10).first()
 # print(ins.id)
 
+#
+# # ins = session.query(Interval).filter(Interval.length > 10).first()
+# ins = session.query(Interval).filter(Interval.bigger(10)).first()
+#
+# print(ins.id)
+# print(ins.bigger(1))
 
-# ins = session.query(Interval).filter(Interval.length > 10).first()
-ins = session.query(Interval).filter(Interval.bigger(10)).first()
 
+ins = session.query(Interval).filter(Interval.length > 1).first()
 print(ins.id)
-print(ins.bigger(1))
 
