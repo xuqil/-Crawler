@@ -103,10 +103,16 @@ session = DBSession()
 # for i in student:
 #     print(i)
 
-# 查询学过课程id为1和2的所有同学的id、姓名
-students = session.query(Students).filter(Scores.student_id == Students.student_id)\
-    .filter(or_(Scores.course_id == 1, Scores.course_id == 2))
-print(students)
-for i in students:
-    print(str(i.student_id) + i.name)
+# # 查询学过课程id为1和2的所有同学的id、姓名（不是并）
+# students = session.query(Students).filter(Scores.student_id == Students.student_id)\
+#     .filter(or_(Scores.course_id == 1, Scores.course_id == 2))
+# print(students)
+# for i in students:
+#     print(str(i.student_id) + i.name)
 
+# 查询选了黄老师课程的学生
+student = session.query(Scores.student_id).join(Courses, Scores.course_id == Courses.course_id)\
+    .join(Teachers, Courses.teacher_id == Teachers.teacher_id).filter(Teachers.name == '黄老师')
+student = session.query(Students).filter(Students.student_id.in_(student))
+for i in student:
+    print(str(i.student_id) + i.name)
