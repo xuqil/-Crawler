@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine, func, select
+from sqlalchemy import create_engine, func, select, not_
 from sqlalchemy import Column, DateTime, Integer, String, Float
 from sqlalchemy.orm import sessionmaker
 
@@ -71,5 +71,22 @@ session = DBSession()
 # for i in student:
 #     print(i)
 
-teacher = session.query(Teachers).filter(Teachers.name.like('李%')).count()
-print(teacher)
+# teacher = session.query(Teachers).filter(Teachers.name.like('李%')).count()
+# print(teacher)
+
+# student = session.query(Students).filter(Scores.student_id == Students.student_id)\
+#     .filter(Courses.teacher_id == Teachers.teacher_id).filter(not_(Courses.teacher_id == 2))
+# for i in student:
+#     print(i.name)
+# print(student)
+
+sql = '''
+    SELECT `students`.student_id, `students`.`name` FROM `students` 
+    WHERE NOT (`students`.student_id IN (SELECT `scores`.`student_id` FROM  scores 
+    INNER JOIN `courses`  ON (`scores`.`course_id` = `courses`.`course_id`) 
+    INNER JOIN `teachers` ON (courses.`teacher_id` = teachers.teacher_id) WHERE teachers.`name` = '黄老师'))
+    '''
+
+student = session.execute(sql)
+for i in student:
+    print(i)
