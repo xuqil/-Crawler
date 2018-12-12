@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine, func, select, not_
+from sqlalchemy import create_engine, func, select, not_, or_
 from sqlalchemy import Column, DateTime, Integer, String, Float
 from sqlalchemy.orm import sessionmaker
 
@@ -73,18 +73,18 @@ session = DBSession()
 
 # teacher = session.query(Teachers).filter(Teachers.name.like('李%')).count()
 # print(teacher)
-
-# 查询选了黄老师课程的学生
-student = session.query(Scores.student_id).join(Courses, Scores.course_id == Courses.course_id)\
-    .join(Teachers, Courses.teacher_id == Teachers.teacher_id).filter(Teachers.name == '黄老师')
-print(student)
-for i in student:
-    print(i[0])
-
-student = session.query(Students).filter(~Students.student_id.in_(student))
-for i in student:
-    print(i.name + str(i.student_id))
-print(student)
+#
+# # 查询选了黄老师课程的学生
+# student = session.query(Scores.student_id).join(Courses, Scores.course_id == Courses.course_id)\
+#     .join(Teachers, Courses.teacher_id == Teachers.teacher_id).filter(Teachers.name == '黄老师')
+# print(student)
+# for i in student:
+#     print(i[0])
+#
+# student = session.query(Students).filter(~Students.student_id.in_(student))
+# for i in student:
+#     print(i.name + str(i.student_id))
+# print(student)
 
 # student = session.query(Students).filter(Scores.student_id == Students.student_id)\
 #     .filter(Courses.teacher_id == Teachers.teacher_id).filter(not_(Courses.teacher_id == 2))
@@ -102,3 +102,11 @@ print(student)
 # student = session.execute(sql)
 # for i in student:
 #     print(i)
+
+# 查询学过课程id为1和2的所有同学的id、姓名
+students = session.query(Students).filter(Scores.student_id == Students.student_id)\
+    .filter(or_(Scores.course_id == 1, Scores.course_id == 2))
+print(students)
+for i in students:
+    print(str(i.student_id) + i.name)
+
