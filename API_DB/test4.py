@@ -1,6 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func, select
 from sqlalchemy import Column, DateTime, Integer, String, Float
+from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 metadata = Base.metadata
@@ -35,4 +36,18 @@ class Teachers(Base):
 
 
 engine = create_engine('mysql+mysqlconnector://root:19218@127.0.0.1:3306/django_db1', encoding='utf8')
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)
+
+DBSession = sessionmaker(engine)
+session = DBSession()
+
+
+sql = 'SELECT students.`name` , AVG(scores.number) FROM scores ' \
+      'LEFT JOIN students on scores.student_id = students.student_id  ' \
+      'GROUP BY students.student_id HAVING AVG(scores.number) > 60;'
+
+student = session.execute(sql)
+
+for i in student:
+    print(i)
+print(student)
