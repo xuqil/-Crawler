@@ -42,12 +42,31 @@ DBSession = sessionmaker(engine)
 session = DBSession()
 
 
-sql = 'SELECT students.`name` , AVG(scores.number) FROM scores ' \
-      'LEFT JOIN students on scores.student_id = students.student_id  ' \
-      'GROUP BY students.student_id HAVING AVG(scores.number) > 60;'
+# student = session.query(Students, func.avg(Scores.number).label('average')).\
+#     join(Scores, Students.student_id == Scores.student_id).filter(Students.student_id == Scores.student_id).all()
+#
+# for i, j in student:
+#     print(i.name + str(j))
+# print(student)
+# print(type(student))
+#
+# sql = 'SELECT students.`name` , AVG(scores.number) FROM scores ' \
+#       'LEFT JOIN students on scores.student_id = students.student_id  ' \
+#       'GROUP BY students.student_id HAVING AVG(scores.number) > 60;'
+#
+# student = session.execute(sql)
+#
+# for i in student:
+#     print(i)
+# print(student)
+
+sql = '''
+        SELECT students.`name`, students.student_id, COUNT(courses.course_id) 
+        FROM scores LEFT JOIN students on scores.student_id = students.student_id LEFT JOIN courses on scores.course_id = courses.course_id
+        GROUP BY students.student_id;
+        '''
 
 student = session.execute(sql)
-
 for i in student:
     print(i)
-print(student)
+
