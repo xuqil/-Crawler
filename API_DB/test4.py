@@ -61,7 +61,7 @@ session = DBSession()
 # print(student)
 
 sql = '''
-        SELECT students.`name`, students.student_id, COUNT(courses.course_id) 
+        SELECT students.`name`, students.student_id, COUNT(courses.course_id), SUM(scores.number) 
         FROM scores LEFT JOIN students on scores.student_id = students.student_id LEFT JOIN courses on scores.course_id = courses.course_id
         GROUP BY students.student_id;
         '''
