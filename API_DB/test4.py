@@ -74,19 +74,31 @@ session = DBSession()
 # teacher = session.query(Teachers).filter(Teachers.name.like('李%')).count()
 # print(teacher)
 
+# 查询选了黄老师课程的学生
+student = session.query(Scores.student_id).join(Courses, Scores.course_id == Courses.course_id)\
+    .join(Teachers, Courses.teacher_id == Teachers.teacher_id).filter(Teachers.name == '黄老师')
+print(student)
+for i in student:
+    print(i[0])
+
+student = session.query(Students).filter(~Students.student_id.in_(student))
+for i in student:
+    print(i.name + str(i.student_id))
+print(student)
+
 # student = session.query(Students).filter(Scores.student_id == Students.student_id)\
 #     .filter(Courses.teacher_id == Teachers.teacher_id).filter(not_(Courses.teacher_id == 2))
 # for i in student:
 #     print(i.name)
 # print(student)
 
-sql = '''
-    SELECT `students`.student_id, `students`.`name` FROM `students` 
-    WHERE NOT (`students`.student_id IN (SELECT `scores`.`student_id` FROM  scores 
-    INNER JOIN `courses`  ON (`scores`.`course_id` = `courses`.`course_id`) 
-    INNER JOIN `teachers` ON (courses.`teacher_id` = teachers.teacher_id) WHERE teachers.`name` = '黄老师'))
-    '''
-
-student = session.execute(sql)
-for i in student:
-    print(i)
+# sql = '''
+#     SELECT `students`.student_id, `students`.`name` FROM `students`
+#     WHERE NOT (`students`.student_id IN (SELECT `scores`.`student_id` FROM  scores
+#     INNER JOIN `courses`  ON (`scores`.`course_id` = `courses`.`course_id`)
+#     INNER JOIN `teachers` ON (courses.`teacher_id` = teachers.teacher_id) WHERE teachers.`name` = '黄老师'))
+#     '''
+#
+# student = session.execute(sql)
+# for i in student:
+#     print(i)
