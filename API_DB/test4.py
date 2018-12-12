@@ -59,14 +59,17 @@ session = DBSession()
 # for i in student:
 #     print(i)
 # print(student)
+#
+# sql = '''
+#         SELECT students.`name`, students.student_id, COUNT(courses.course_id), SUM(scores.number)
+#         FROM scores LEFT JOIN students on scores.student_id = students.student_id
+#         LEFT JOIN courses on scores.course_id = courses.course_id
+#         GROUP BY students.student_id;
+#         '''
+#
+# student = session.execute(sql)
+# for i in student:
+#     print(i)
 
-sql = '''
-        SELECT students.`name`, students.student_id, COUNT(courses.course_id), SUM(scores.number) 
-        FROM scores LEFT JOIN students on scores.student_id = students.student_id LEFT JOIN courses on scores.course_id = courses.course_id
-        GROUP BY students.student_id;
-        '''
-
-student = session.execute(sql)
-for i in student:
-    print(i)
-
+teacher = session.query(Teachers).filter(Teachers.name.like('李%')).count()
+print(teacher)
