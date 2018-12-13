@@ -132,13 +132,19 @@ session = DBSession()
 #     print(str(i.student_id) + i.name)
 
 # 查询没有学全所有课的同学的id、姓名
-sql = '''
-    SELECT students.student_id, students.name FROM students 
-    LEFT JOIN scores ON (
-    students.student_id = scores.student_id) 
-    GROUP BY students.student_id HAVING COUNT(scores.course_id) < 9 ;
-'''
-student = session.execute(sql)
+# sql = '''
+#     SELECT students.student_id, students.name FROM students
+#     LEFT JOIN scores ON (
+#     students.student_id = scores.student_id)
+#     GROUP BY students.student_id HAVING COUNT(scores.course_id) < 9 ;
+# '''
+# student = session.execute(sql)
+# for i in student:
+#     print(str(i.student_id) + i.name)
+
+num = session.query(Courses).count()
+print(num)
+student = session.query(Students).join(Scores, Students.student_id == Scores.student_id)\
+    .group_by(Students.student_id).having(func.count(Scores.course_id) < num).all()
 for i in student:
     print(str(i.student_id) + i.name)
-
