@@ -110,9 +110,19 @@ session = DBSession()
 # for i in students:
 #     print(str(i.student_id) + i.name)
 
-# 查询选了黄老师课程的学生
-student = session.query(Scores.student_id).join(Courses, Scores.course_id == Courses.course_id)\
-    .join(Teachers, Courses.teacher_id == Teachers.teacher_id).filter(Teachers.name == '黄老师')
-student = session.query(Students).filter(Students.student_id.in_(student))
+# # 查询选了黄老师课程的学生
+# student = session.query(Scores.student_id).join(Courses, Scores.course_id == Courses.course_id)\
+#     .join(Teachers, Courses.teacher_id == Teachers.teacher_id).filter(Teachers.name == '黄老师')
+# student = session.query(Students).filter(Students.student_id.in_(student))
+# for i in student:
+#     print(str(i.student_id) + i.name)
+
+# 查询所有课程成绩小于60分的同学的id和姓名
+sql = '''
+    SELECT students.student_id, students.`name` FROM students 
+    WHERE NOT (students.student_id in (SELECT scores.student_id FROM scores WHERE scores.number > 60.0))
+'''
+student = session.execute(sql)
 for i in student:
-    print(str(i.student_id) + i.name)
+    print(str(i[0]) + i[1])
+
