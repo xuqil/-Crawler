@@ -126,7 +126,19 @@ session = DBSession()
 # for i in student:
 #     print(str(i[0]) + i[1])
 
-s = session.query(Scores.student_id).filter(Scores.number > 60.0)
-student = session.query(Students).filter(~Students.student_id.in_(s))
+# s = session.query(Scores.student_id).filter(Scores.number > 60.0)
+# student = session.query(Students).filter(~Students.student_id.in_(s))
+# for i in student:
+#     print(str(i.student_id) + i.name)
+
+# 查询没有学全所有课的同学的id、姓名
+sql = '''
+    SELECT students.student_id, students.name FROM students 
+    LEFT JOIN scores ON (
+    students.student_id = scores.student_id) 
+    GROUP BY students.student_id HAVING COUNT(scores.course_id) < 9 ;
+'''
+student = session.execute(sql)
 for i in student:
     print(str(i.student_id) + i.name)
+
