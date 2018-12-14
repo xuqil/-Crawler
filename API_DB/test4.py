@@ -67,24 +67,24 @@ session = DBSession()
 #     print(i)
 
 
-# 查询所有同学的id、姓名、选课的数、总成绩
-sql = '''
-        SELECT students.`name`, students.student_id, COUNT(courses.course_id), SUM(scores.number)
-        FROM scores LEFT JOIN students on scores.student_id = students.student_id
-        LEFT JOIN courses on scores.course_id = courses.course_id
-        GROUP BY students.student_id;
-        '''
-student = session.execute(sql)
-for i in student:
-    print(i)
-
-student = session.query(Students.student_id, Students.name,
-                        func.count(Courses.course_id).label('num'),
-                        func.sum(Scores.number).label('sum'))\
-    .join(Scores, Students.student_id == Scores.student_id)\
-    .join(Courses, Scores.course_id == Courses.course_id).group_by(Students.student_id)
-for i in student:
-    print(i)
+# # 查询所有同学的id、姓名、选课的数、总成绩
+# sql = '''
+#         SELECT students.`name`, students.student_id, COUNT(courses.course_id), SUM(scores.number)
+#         FROM scores LEFT JOIN students on scores.student_id = students.student_id
+#         LEFT JOIN courses on scores.course_id = courses.course_id
+#         GROUP BY students.student_id;
+#         '''
+# student = session.execute(sql)
+# for i in student:
+#     print(i)
+#
+# student = session.query(Students.student_id, Students.name,
+#                         func.count(Courses.course_id).label('num'),
+#                         func.sum(Scores.number).label('sum'))\
+#     .join(Scores, Students.student_id == Scores.student_id)\
+#     .join(Courses, Scores.course_id == Courses.course_id).group_by(Students.student_id)
+# for i in student:
+#     print(i)
 
 
 # teacher = session.query(Teachers).filter(Teachers.name.like('李%')).count()
@@ -180,3 +180,14 @@ for i in student:
 #     .group_by(Students.student_id).order_by('avg desc').all()
 # for i in student:
 #     print(i)
+
+
+# 查询各科成绩的最高和最低分，以如下形式显示：课程ID，课程名称，最高分，最低分
+student = session.query(Courses.course_id,
+                        Courses.name, func.max(Scores.number).label('max'),
+                        func.min(Scores.number).label('min'))\
+    .join(Scores, Courses.course_id == Scores.course_id)\
+    .group_by(Courses.course_id)
+for i in student:
+    print(i)
+
