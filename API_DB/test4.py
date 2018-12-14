@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine, func, select, not_, or_
+from sqlalchemy import create_engine, func, select, not_, or_, desc
 from sqlalchemy import Column, DateTime, Integer, String, Float
 from sqlalchemy.orm import sessionmaker
 
@@ -177,7 +177,7 @@ session = DBSession()
 
 # student = session.query(Students.name, func.avg(Scores.number).label('avg')).\
 #     join(Scores, Students.student_id == Scores.student_id)\
-#     .group_by(Students.student_id).order_by('avg desc').all()
+#     .group_by(Students.student_id).order_by(desc('avg')).all()
 # for i in student:
 #     print(i)
 
