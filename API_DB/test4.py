@@ -236,22 +236,30 @@ session = DBSession()
 #     session.query(Scores).filter(Scores.scores_id == i.scores_id).update({'number': i.number})
 # session.commit()
 
+#
+# # 查询两门以上不及格的同学的id、姓名、以及不及格课程数
+# num = session.query(Students.student_id, Students.name,
+#                     func.count(Scores.course_id).label('num'))\
+#     .join(Scores, Students.student_id == Scores.student_id).filter(Scores.number < 60)\
+#     .group_by(Students.student_id).having(func.count(Scores.number < 60) >= 2)
+# print(num)
+# for i in num:
+#     print(i)
+#
+# sql = '''
+#     SELECT students.student_id, students.`name`, COUNT(CASE WHEN scores.number < 60.0
+#     THEN scores.number ELSE NULL END) AS bad_count
+#     FROM students
+#     LEFT OUTER JOIN scores ON (students.student_id = scores.student_id)
+#     GROUP BY students.student_id HAVING COUNT(CASE WHEN (scores.number < 60.0) THEN scores.number ELSE NULL END) >= 2
+# '''
+# num = session.execute(sql)
+# for i in num:
+#     print(i)
 
-# 查询两门以上不及格的同学的id、姓名、以及不及格课程数
-num = session.query(Students.student_id, Students.name,
-                    func.count(Scores.course_id).label('num'))\
-    .join(Scores, Students.student_id == Scores.student_id).filter(Scores.number < 60)\
-    .group_by(Students.student_id).having(func.count(Scores.number < 60) >= 2)
-print(num)
-for i in num:
-    print(i)
-
-sql = '''
-    SELECT students.student_id, students.`name`, COUNT(CASE WHEN scores.number < 60.0 THEN scores.number ELSE NULL END) AS bad_count
-    FROM students
-    LEFT OUTER JOIN scores ON (students.student_id = scores.student_id)
-    GROUP BY students.student_id HAVING COUNT(CASE WHEN (scores.number < 60.0) THEN scores.number ELSE NULL END) >= 2
-'''
-num = session.execute(sql)
+# 查询每门课的选课人数
+num = session.query(Courses.name, func.count(Scores.student_id).label('num'))\
+    .join(Scores, Courses.course_id == Scores.course_id).group_by(Courses.course_id)\
+    .order_by('num')
 for i in num:
     print(i)
