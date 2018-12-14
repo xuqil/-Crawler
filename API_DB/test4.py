@@ -50,15 +50,23 @@ session = DBSession()
 # print(student)
 # print(type(student))
 #
-# sql = 'SELECT students.`name` , AVG(scores.number) FROM scores ' \
-#       'LEFT JOIN students on scores.student_id = students.student_id  ' \
-#       'GROUP BY students.student_id HAVING AVG(scores.number) > 60;'
-#
-# student = session.execute(sql)
-#
-# for i in student:
-#     print(i)
-# print(student)
+sql = 'SELECT students.`name` , AVG(scores.number) FROM scores ' \
+      'LEFT JOIN students on scores.student_id = students.student_id  ' \
+      'GROUP BY students.student_id HAVING AVG(scores.number) > 60;'
+
+student = session.execute(sql)
+
+for i in student:
+    print(i)
+print(student)
+
+student = session.query(Students.student_id, func.avg(Scores.number).label('avg')).\
+    join(Scores, Students.student_id == Scores.student_id).\
+    group_by(Students.student_id).having(func.avg(Scores.number) > 60)
+for i in student:
+    print(i)
+
+
 #
 # sql = '''
 #         SELECT students.`name`, students.student_id, COUNT(courses.course_id), SUM(scores.number)
@@ -159,8 +167,8 @@ session = DBSession()
 # for i in student:
 #     print(i)
 
-student = session.query(Students.name, func.avg(Scores.number).label('avg')).\
-    join(Scores, Students.student_id == Scores.student_id)\
-    .group_by(Students.student_id).order_by('avg desc').all()
-for i in student:
-    print(i)
+# student = session.query(Students.name, func.avg(Scores.number).label('avg')).\
+#     join(Scores, Students.student_id == Scores.student_id)\
+#     .group_by(Students.student_id).order_by('avg desc').all()
+# for i in student:
+#     print(i)
