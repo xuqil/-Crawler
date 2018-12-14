@@ -182,21 +182,28 @@ session = DBSession()
 #     print(i)
 
 
-# 查询各科成绩的最高和最低分，以如下形式显示：课程ID，课程名称，最高分，最低分
-student = session.query(Courses.course_id,
-                        Courses.name, func.max(Scores.number).label('max'),
-                        func.min(Scores.number).label('min'))\
+# # 查询各科成绩的最高和最低分，以如下形式显示：课程ID，课程名称，最高分，最低分
+# student = session.query(Courses.course_id,
+#                         Courses.name, func.max(Scores.number).label('max'),
+#                         func.min(Scores.number).label('min'))\
+#     .join(Scores, Courses.course_id == Scores.course_id)\
+#     .group_by(Courses.course_id)
+# for i in student:
+#     print(i)
+#
+# sql = '''
+#     SELECT DISTINCT courses.course_id, courses.`name`, MAX(scores.number), MIN(scores.number)
+#     FROM courses
+#     LEFT JOIN scores on (courses.course_id = scores.course_id) GROUP BY courses.course_id
+# '''
+# s = session.execute(sql)
+# for i in s:
+#     print(i)
+
+
+#  查询每门课程的平均成绩，按照平均成绩进行排序
+student = session.query(Courses.name, func.avg(Scores.number).label('avg'))\
     .join(Scores, Courses.course_id == Scores.course_id)\
-    .group_by(Courses.course_id)
+    .group_by(Courses.course_id).order_by('avg')
 for i in student:
     print(i)
-
-sql = '''
-    SELECT DISTINCT courses.course_id, courses.`name`, MAX(scores.number), MIN(scores.number) 
-    FROM courses 
-    LEFT JOIN scores on (courses.course_id = scores.course_id) GROUP BY courses.course_id
-'''
-s = session.execute(sql)
-for i in s:
-    print(i)
-
