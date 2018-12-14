@@ -141,10 +141,21 @@ session = DBSession()
 # student = session.execute(sql)
 # for i in student:
 #     print(str(i.student_id) + i.name)
+#
+# num = session.query(Courses).count()
+# print(num)
+# student = session.query(Students).join(Scores, Students.student_id == Scores.student_id)\
+#     .group_by(Students.student_id).having(func.count(Scores.course_id) < num).all()
+# for i in student:
+#     print(str(i.student_id) + i.name)
 
-num = session.query(Courses).count()
-print(num)
-student = session.query(Students).join(Scores, Students.student_id == Scores.student_id)\
-    .group_by(Students.student_id).having(func.count(Scores.course_id) < num).all()
+# 查询所有学生的姓名、平均分，并且按照平均分从高到低排序
+sql = '''
+    SELECT DISTINCT students.`name`, AVG(scores.number) as avg FROM students 
+    LEFT OUTER JOIN scores on (students.student_id = scores.student_id) 
+    GROUP BY students.student_id ORDER BY avg DESC;
+    '''
+student = session.execute(sql)
 for i in student:
-    print(str(i.student_id) + i.name)
+    print(i)
+
