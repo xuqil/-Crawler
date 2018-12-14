@@ -201,19 +201,28 @@ session = DBSession()
 #     print(i)
 
 
-#  查询每门课程的平均成绩，按照平均成绩进行排序
-student = session.query(Courses.name, func.avg(Scores.number).label('avg'))\
-    .join(Scores, Courses.course_id == Scores.course_id)\
-    .group_by(Courses.course_id).order_by('avg')
-for i in student:
-    print(i)
+# #  查询每门课程的平均成绩，按照平均成绩进行排序
+# student = session.query(Courses.name, func.avg(Scores.number).label('avg'))\
+#     .join(Scores, Courses.course_id == Scores.course_id)\
+#     .group_by(Courses.course_id).order_by('avg')
+# for i in student:
+#     print(i)
+#
+# sql = '''
+#     SELECT courses.`name`, AVG(scores.number) AS avg
+#     FROM courses
+#     LEFT JOIN scores ON (courses.course_id = scores.course_id)
+#     GROUP BY courses.course_id ORDER BY avg
+# '''
+# s = session.execute(sql)
+# for i in s:
+#     print(i)
 
-sql = '''
-    SELECT courses.`name`, AVG(scores.number) AS avg 
-    FROM courses
-    LEFT JOIN scores ON (courses.course_id = scores.course_id)
-    GROUP BY courses.course_id ORDER BY avg
-'''
-s = session.execute(sql)
-for i in s:
-    print(i)
+
+# 统计总共有多少女生，多少男生
+man = session.query(Students).filter(Students.gender == 1).count()
+print(man)
+woman = session.query(Students).filter(Students.gender == 2).count()
+print(woman)
+
+
