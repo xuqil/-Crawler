@@ -225,13 +225,33 @@ session = DBSession()
 # woman = session.query(Students).filter(Students.gender == 2).count()
 # print(woman)
 
+#
+# # 将“黄老师”的每一门课程都在原来的基础之上加5分
+# teacher = session.query(Scores)\
+#     .join(Courses, Scores.course_id == Courses.course_id)\
+#     .join(Teachers, Courses.teacher_id == Teachers.teacher_id).filter(Teachers.name == '黄老师')
+# for i in teacher:
+#     i.number += 5
+#     print(i.number)
+#     session.query(Scores).filter(Scores.scores_id == i.scores_id).update({'number': i.number})
+# session.commit()
 
-# 将“黄老师”的每一门课程都在原来的基础之上加5分
-teacher = session.query(Scores)\
-    .join(Courses, Scores.course_id == Courses.course_id)\
-    .join(Teachers, Courses.teacher_id == Teachers.teacher_id).filter(Teachers.name == '黄老师')
-for i in teacher:
-    i.number += 5
-    print(i.number)
-    session.query(Scores).filter(Scores.scores_id == i.scores_id).update({'number': i.number})
-session.commit()
+
+# 查询两门以上不及格的同学的id、姓名、以及不及格课程数
+num = session.query(Students.student_id, Students.name,
+                    func.count(Scores.course_id).label('num'))\
+    .join(Scores, Students.student_id == Scores.student_id).filter(Scores.number < 60)\
+    .group_by(Students.student_id).having(func.count(Scores.number < 60) >= 2)
+print(num)
+for i in num:
+    print(i)
+
+sql = '''
+    SELECT students.student_id, students.`name`, COUNT(CASE WHEN scores.number < 60.0 THEN scores.number ELSE NULL END) AS bad_count
+    FROM students
+    LEFT OUTER JOIN scores ON (students.student_id = scores.student_id)
+    GROUP BY students.student_id HAVING COUNT(CASE WHEN (scores.number < 60.0) THEN scores.number ELSE NULL END) >= 2
+'''
+num = session.execute(sql)
+for i in num:
+    print(i)
