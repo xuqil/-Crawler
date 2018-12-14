@@ -219,10 +219,19 @@ session = DBSession()
 #     print(i)
 
 
-# 统计总共有多少女生，多少男生
-man = session.query(Students).filter(Students.gender == 1).count()
-print(man)
-woman = session.query(Students).filter(Students.gender == 2).count()
-print(woman)
+# # 统计总共有多少女生，多少男生
+# man = session.query(Students).filter(Students.gender == 1).count()
+# print(man)
+# woman = session.query(Students).filter(Students.gender == 2).count()
+# print(woman)
 
 
+# 将“黄老师”的每一门课程都在原来的基础之上加5分
+teacher = session.query(Scores)\
+    .join(Courses, Scores.course_id == Courses.course_id)\
+    .join(Teachers, Courses.teacher_id == Teachers.teacher_id).filter(Teachers.name == '黄老师')
+for i in teacher:
+    i.number += 5
+    print(i.number)
+    session.query(Scores).filter(Scores.scores_id == i.scores_id).update({'number': i.number})
+session.commit()
