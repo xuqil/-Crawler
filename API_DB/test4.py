@@ -207,3 +207,13 @@ student = session.query(Courses.name, func.avg(Scores.number).label('avg'))\
     .group_by(Courses.course_id).order_by('avg')
 for i in student:
     print(i)
+
+sql = '''
+    SELECT courses.`name`, AVG(scores.number) AS avg 
+    FROM courses
+    LEFT JOIN scores ON (courses.course_id = scores.course_id)
+    GROUP BY courses.course_id ORDER BY avg
+'''
+s = session.execute(sql)
+for i in s:
+    print(i)
