@@ -191,3 +191,12 @@ student = session.query(Courses.course_id,
 for i in student:
     print(i)
 
+sql = '''
+    SELECT DISTINCT courses.course_id, courses.`name`, MAX(scores.number), MIN(scores.number) 
+    FROM courses 
+    LEFT JOIN scores on (courses.course_id = scores.course_id) GROUP BY courses.course_id
+'''
+s = session.execute(sql)
+for i in s:
+    print(i)
+
