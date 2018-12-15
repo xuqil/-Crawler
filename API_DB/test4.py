@@ -119,9 +119,9 @@ session = DBSession()
 # for i in student:
 #     print(i)
 
-# # 查询学过课程id为1和2的所有同学的id、姓名（不是并）
+# # 查询学过课程id为1和2的所有同学的id、姓名
 # students = session.query(Students).filter(Scores.student_id == Students.student_id)\
-#     .filter(or_(Scores.course_id == 1, Scores.course_id == 2))
+#     .filter(Scores.course_id.in_([1, 2])).distinct()
 # print(students)
 # for i in students:
 #     print(str(i.student_id) + i.name)
